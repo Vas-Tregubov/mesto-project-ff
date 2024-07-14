@@ -56,6 +56,7 @@ export {
   editProfileFormDescription,
   profileTitle,
   profileDescription,
+  popupNewCard,
 };
 
 // don't forget to call imported functions

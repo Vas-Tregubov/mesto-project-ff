@@ -1,5 +1,6 @@
 import {
   popupEditProfile,
+  popupNewCard,
   popupEditProfileForm,
   editProfileFormName,
   editProfileFormDescription,
@@ -17,22 +18,27 @@ const defaultForm = {
 };
 
 function openModal(obj) {
+  obj.classList.add("popup_is-animated");
   obj.classList.add("popup_is-opened");
   const closeModalCross = obj.querySelector(".popup__close");
   closeModalCross.addEventListener("click", () => closeModal(obj));
-  // document.addEventListener("click", () => closeModal(obj));
   document.addEventListener("keydown", (evt) => {
     if (evt.code == "Escape") {
       closeModal(obj);
     }
   });
+  window.addEventListener('click', (evt) => {
+    if (evt.target == obj) {
+      closeModal(obj);
+    }
+  })
 }
 
 function closeModal(obj) {
   obj.classList.remove("popup_is-opened");
-  obj.classList.add("popup_is-animated");
   const closeModalCross = obj.querySelector(".popup__close");
   closeModalCross.removeEventListener("click", () => closeModal(obj));
+  // window.removeEventListener("click", () => closeModal(obj));
   document.removeEventListener("keyup", () => closeModal(obj));
   const timerRename = setTimeout(() => {
     popupEditProfileForm.reset();
