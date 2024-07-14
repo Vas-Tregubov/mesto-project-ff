@@ -33,6 +33,7 @@ const editProfileFormDescription = document.querySelector(
 );
 editProfileFormDescription.value = "Исследователь океана";
 const popupEditProfileForm = document.forms["edit-profile"];
+const popupNewCardForm = document.forms["new-place"];
 
 // event listeners
 
@@ -40,6 +41,7 @@ profileEditButton.addEventListener("click", () => openModal(popupEditProfile));
 profileAddButton.addEventListener("click", () => openModal(popupNewCard));
 // cardImage.addEventListener("click", () => openModal(popupEditCardImage));
 popupEditProfileForm.addEventListener("submit", handleFormSubmit);
+popupNewCardForm.addEventListener("submit", handleFormSubmit);
 
 function renderInitialCards() {
   initialCards.forEach((elem) => placesList.append(addCard(elem, deleteCard)));
@@ -57,6 +59,7 @@ export {
   profileTitle,
   profileDescription,
   popupNewCard,
+  popupNewCardForm
 };
 
 // don't forget to call imported functions

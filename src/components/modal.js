@@ -6,15 +6,22 @@ import {
   editProfileFormDescription,
   profileTitle,
   profileDescription,
+  popupNewCardForm
 } from "../index.js";
 
 const profileFormName = document.querySelector(".popup__input_type_name");
 const profileFormDescription = document.querySelector(
   ".popup__input_type_description"
 );
+const cardFormName = document.querySelector(".popup__input_type_card-name");
+const cardFormLink = document.querySelector(
+  ".popup__input_type_url"
+);
 const defaultForm = {
-  profileName: (profileFormName.value = "Жак-Ив Кусто"),
-  profileJob: (profileFormDescription.value = "Исследователь океана"),
+  profileName: (profileFormName.value = 'Jack'),
+  profileJob: (profileFormDescription.value = 'Kusto'),
+  cardName: (cardFormName.value),
+  cardLink: (cardFormLink.value),
 };
 
 function openModal(obj) {
@@ -36,16 +43,19 @@ function openModal(obj) {
 
 function closeModal(obj) {
   obj.classList.remove("popup_is-opened");
+  const inputs = obj.querySelectorAll('input');
+  // console.log(inputs);
   const closeModalCross = obj.querySelector(".popup__close");
   closeModalCross.removeEventListener("click", () => closeModal(obj));
-  // window.removeEventListener("click", () => closeModal(obj));
+  window.removeEventListener("click", () => closeModal(obj));
   document.removeEventListener("keyup", () => closeModal(obj));
   const timerRename = setTimeout(() => {
-    popupEditProfileForm.reset();
+    inputs.forEach(function(item) {
+      item.value = '';
+    });
     profileFormName.value = "Жак-Ив Кусто";
     profileFormDescription.value = "Исследователь океана";
   }, 1000)
-  // document.removeEventListener("click", () => closeModal(obj));
 }
 
 function handleFormSubmit(evt) {
@@ -56,6 +66,13 @@ function handleFormSubmit(evt) {
   const job = profileFormDescription.value;
   defaultForm.profileJob = job;
   profileDescription.textContent = job;
+  // const name = profileFormName.value;
+  // defaultForm.profileName = name;
+  // profileTitle.textContent = name;
+  // const job = profileFormDescription.value;
+  // defaultForm.profileJob = job;
+  // profileDescription.textContent = job;
+  closeModal(evt.target.closest('.popup'));
   // const profileFormName = evt.target.querySelector(".popup__input_type_name");
   // const profileFormDescription = evt.target.querySelector(".popup__input_type_description");
   // const defaultForm = {
