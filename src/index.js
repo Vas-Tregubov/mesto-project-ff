@@ -1,13 +1,26 @@
 import "./pages/index.css";
 import { initialCards } from "./scripts/cards.js";
-import { addCard, deleteCard } from "./components/card.js";
-import { openModal, closeModal, handleFormSubmit } from "./components/modal.js";
+import {
+  addCard,
+  deleteCard,
+  cardLike,
+  imageIncrease,
+} from "./components/card.js";
+import {
+  openModal,
+  closeModal,
+  handleFormSubmit,
+  cardLink,
+  cardName,
+} from "./components/modal.js";
 
 const cardTemplate = document.querySelector("#card-template").content;
 const placesList = document.querySelector(".places__list");
 
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
+
+// const likeItems = document.querySelectorAll(".card__like-button");
 
 // profile edit
 
@@ -37,14 +50,31 @@ const popupNewCardForm = document.forms["new-place"];
 
 // event listeners
 
+function addEventListenersToCards() {
+  const likeItems = document.querySelectorAll(".card__like-button");
+  const cardImages = document.querySelectorAll(".card__image");
+
+  likeItems.forEach(item => item.addEventListener("click", cardLike));
+  cardImages.forEach(image => image.addEventListener("click", imageIncrease));
+}
+
 profileEditButton.addEventListener("click", () => openModal(popupEditProfile));
 profileAddButton.addEventListener("click", () => openModal(popupNewCard));
 // cardImage.addEventListener("click", () => openModal(popupEditCardImage));
 popupEditProfileForm.addEventListener("submit", handleFormSubmit);
 popupNewCardForm.addEventListener("submit", handleFormSubmit);
+// likeItems.forEach(item => item.addEventListener("click", cardLike));
+// window.addEventListener("click", imageIncrease);
+
+export function renderNewCard(link, name) {
+  initialCards.unshift({ link: link, name: name });
+  placesList.prepend(addCard(initialCards[0], deleteCard));
+  addEventListenersToCards();
+}
 
 function renderInitialCards() {
   initialCards.forEach((elem) => placesList.append(addCard(elem, deleteCard)));
+  addEventListenersToCards();
 }
 
 renderInitialCards();
@@ -59,7 +89,7 @@ export {
   profileTitle,
   profileDescription,
   popupNewCard,
-  popupNewCardForm
+  popupNewCardForm,
 };
 
 // don't forget to call imported functions
