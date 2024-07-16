@@ -8,7 +8,7 @@ import {
   profileDescription,
   popupNewCardForm,
   renderInitialCards,
-  renderNewCard
+  renderNewCard,
 } from "../index.js";
 import { addCard } from "./card.js";
 import { initialCards } from "../scripts/cards.js";
@@ -52,26 +52,21 @@ function closeModal(obj) {
   }, 1000);
 }
 
-// let cardLink = 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg';
-// let cardName = 'ARCHYZ';
-
-let cardName;
-let cardLink;
-
-function handleFormSubmit(evt) {
+function handleFormSubmitProfile(evt) {
   evt.preventDefault();
   const profileName = profileFormName.value;
   profileTitle.textContent = profileName;
   const profileJob = profileFormDescription.value;
   profileDescription.textContent = profileJob;
-  // let cardName = cardFormName.value;
-  // let cardLink = cardFormLink.value;
-  cardName = cardFormName.value;
-  cardLink = cardFormLink.value;
-  renderNewCard(cardLink, cardName);
-  console.log(initialCards);
-
   closeModal(evt.target.closest(".popup"));
 }
 
-export { openModal, closeModal, handleFormSubmit, cardLink, cardName };
+function handleFormSubmitCard(evt) {
+  evt.preventDefault();
+  const cardName = cardFormName.value;
+  const cardLink = cardFormLink.value;
+  renderNewCard(cardLink, cardName);
+  closeModal(evt.target.closest(".popup"));
+}
+
+export { openModal, closeModal, handleFormSubmitProfile, handleFormSubmitCard };

@@ -9,7 +9,8 @@ import {
 import {
   openModal,
   closeModal,
-  handleFormSubmit,
+  handleFormSubmitProfile,
+  handleFormSubmitCard,
   cardLink,
   cardName,
 } from "./components/modal.js";
@@ -59,8 +60,8 @@ function addEventListenersToCards() {
 profileEditButton.addEventListener("click", () => openModal(popupEditProfile));
 profileAddButton.addEventListener("click", () => openModal(popupNewCard));
 // cardImage.addEventListener("click", () => openModal(popupEditCardImage));
-popupEditProfileForm.addEventListener("submit", handleFormSubmit);
-popupNewCardForm.addEventListener("submit", handleFormSubmit);
+popupEditProfileForm.addEventListener("submit", handleFormSubmitProfile);
+popupNewCardForm.addEventListener("submit", handleFormSubmitCard);
 // likeItems.forEach(item => item.addEventListener("click", cardLike));
 // window.addEventListener("click", imageIncrease);
 
