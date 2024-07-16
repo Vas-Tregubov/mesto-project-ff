@@ -1,5 +1,6 @@
-import { cardTemplate, popupTypeImage } from "../index.js";
+import { cardTemplate, popupTypeImage, placesList } from "../index.js";
 import { openModal } from "./modal.js";
+import { initialCards } from "../scripts/cards.js";
 
 function addCard(card, deleteCard, cardLike, imageIncrease) {
   const cardElement = cardTemplate.querySelector(".card").cloneNode("true");
@@ -9,6 +10,25 @@ function addCard(card, deleteCard, cardLike, imageIncrease) {
   const deleteButton = cardElement.querySelector(".card__delete-button");
   deleteButton.addEventListener("click", deleteCard);
   return cardElement;
+}
+
+function addEventListenersToCards() {
+  const likeItems = document.querySelectorAll(".card__like-button");
+  const cardImages = document.querySelectorAll(".card__image");
+
+  likeItems.forEach((item) => item.addEventListener("click", cardLike));
+  cardImages.forEach((image) => image.addEventListener("click", imageIncrease));
+}
+
+function renderInitialCards() {
+  initialCards.forEach((elem) => placesList.append(addCard(elem, deleteCard)));
+  addEventListenersToCards();
+}
+
+function renderNewCard(link, name) {
+  initialCards.unshift({ link: link, name: name });
+  placesList.prepend(addCard(initialCards[0], deleteCard));
+  addEventListenersToCards();
 }
 
 function deleteCard(evt) {
@@ -33,4 +53,11 @@ function imageIncrease(evt) {
   openModal(popupTypeImage);
 }
 
-export { addCard, deleteCard, cardLike, imageIncrease };
+export {
+  addCard,
+  deleteCard,
+  cardLike,
+  imageIncrease,
+  renderNewCard,
+  renderInitialCards,
+};

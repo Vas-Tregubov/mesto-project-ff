@@ -1,22 +1,19 @@
 import {
   popupEditProfile,
-  popupNewCard,
-  popupEditProfileForm,
-  editProfileFormName,
-  editProfileFormDescription,
   profileTitle,
   profileDescription,
-  popupNewCardForm,
   renderInitialCards,
-  renderNewCard,
 } from "../index.js";
-import { addCard } from "./card.js";
+import { addCard, renderNewCard } from "./card.js";
 import { initialCards } from "../scripts/cards.js";
 
 const profileFormName = document.querySelector(".popup__input_type_name");
+profileFormName.value = "Жак-Ив Кусто";
 const profileFormDescription = document.querySelector(
   ".popup__input_type_description"
 );
+profileFormDescription.value = "Исследователь океана";
+
 const cardFormName = document.querySelector(".popup__input_type_card-name");
 const cardFormLink = document.querySelector(".popup__input_type_url");
 
