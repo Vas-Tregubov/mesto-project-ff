@@ -20,8 +20,6 @@ const placesList = document.querySelector(".places__list");
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
 
-// const likeItems = document.querySelectorAll(".card__like-button");
-
 // profile edit
 
 const profileEditButton = document.querySelector(".profile__edit-button");
@@ -35,7 +33,7 @@ const popupNewCard = document.querySelector(".popup_type_new-card");
 // card edit
 
 const cardImage = document.querySelector(".card__image");
-const popupEditCardImage = document.querySelector(".popup_type_image");
+const popupTypeImage = document.querySelector(".popup_type_image");
 
 // edit profile form fields
 
@@ -54,8 +52,8 @@ function addEventListenersToCards() {
   const likeItems = document.querySelectorAll(".card__like-button");
   const cardImages = document.querySelectorAll(".card__image");
 
-  likeItems.forEach(item => item.addEventListener("click", cardLike));
-  cardImages.forEach(image => image.addEventListener("click", imageIncrease));
+  likeItems.forEach((item) => item.addEventListener("click", cardLike));
+  cardImages.forEach((image) => image.addEventListener("click", imageIncrease));
 }
 
 profileEditButton.addEventListener("click", () => openModal(popupEditProfile));
@@ -90,6 +88,7 @@ export {
   profileDescription,
   popupNewCard,
   popupNewCardForm,
+  popupTypeImage,
 };
 
 // don't forget to call imported functions
