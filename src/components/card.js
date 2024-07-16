@@ -17,20 +17,20 @@ function deleteCard(evt) {
 }
 
 function cardLike(evt) {
-  const like = evt.target.closest('.card__like-button');
+  const like = evt.target.closest(".card__like-button");
   like.classList.toggle("card__like-button_is-active");
 }
 
 function imageIncrease(evt) {
-  const image = evt.target.closest('.card__image');
+  const image = evt.target.closest(".card__image");
   const imageLink = image.src;
   const imageTitle = image.alt;
-  const popupImage = popupTypeImage.querySelector('.popup__image');
-  const popupCaption = popupTypeImage.querySelector('.popup__caption');
+  const popupImage = popupTypeImage.querySelector(".popup__image");
+  const popupCaption = popupTypeImage.querySelector(".popup__caption");
   popupImage.src = imageLink;
   popupImage.alt = imageTitle;
   popupCaption.textContent = imageTitle;
   openModal(popupTypeImage);
-  }
+}
 
-export {addCard, deleteCard, cardLike, imageIncrease };
+export { addCard, deleteCard, cardLike, imageIncrease };
