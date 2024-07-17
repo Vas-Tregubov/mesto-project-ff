@@ -10,18 +10,12 @@ function addCard(link, name, deleteCard, toggleCardLike, increaseCardImage) {
   cardElement.querySelector(".card__image").alt = name;
   cardElement.querySelector(".card__title").textContent = name;
   const deleteButton = cardElement.querySelector(".card__delete-button");
+  const likeItem = cardElement.querySelector(".card__like-button");
+  likeItem.addEventListener("click", toggleCardLike);
+  const cardImage = cardElement.querySelector(".card__image");
+  cardImage.addEventListener("click", increaseCardImage);
   deleteButton.addEventListener("click", deleteCard);
   return cardElement;
-}
-
-function addEventListenersToCards() {
-  const likeItems = document.querySelectorAll(".card__like-button");
-  const cardImages = document.querySelectorAll(".card__image");
-
-  likeItems.forEach((item) => item.addEventListener("click", toggleCardLike));
-  cardImages.forEach((image) =>
-    image.addEventListener("click", increaseCardImage)
-  );
 }
 
 function deleteCard(evt) {

@@ -3,7 +3,7 @@ import { initialCards } from "./scripts/cards.js";
 import {
   addCard,
   deleteCard,
-  // toggleCardLike,
+  toggleCardLike,
 } from "./components/card.js";
 import {
   openModal,
@@ -47,23 +47,21 @@ popupNewCardForm.addEventListener("submit", handleFormSubmitCard);
 function renderInitialCards() {
   initialCards.forEach((card) => {
     const { name, link } = card;
-    placesList.append(addCard(link, name, deleteCard));
+    placesList.append(addCard(link, name, deleteCard, toggleCardLike, increaseCardImage));
   });
 }
-  // addEventListenersToCards();
-
 
 function renderNewCard(link, name) {
-  placesList.prepend(addCard(link, name, deleteCard));
-  // addEventListenersToCards();
+  placesList.prepend(addCard(link, name, deleteCard, toggleCardLike, increaseCardImage));
 }
+
+const popupImage = popupTypeImage.querySelector(".popup__image");
+const popupCaption = popupTypeImage.querySelector(".popup__caption");
 
 function increaseCardImage(evt) {
   const image = evt.target.closest(".card__image");
   const imageLink = image.src;
   const imageTitle = image.alt;
-  const popupImage = popupTypeImage.querySelector(".popup__image");
-  const popupCaption = popupTypeImage.querySelector(".popup__caption");
   popupImage.src = imageLink;
   popupImage.alt = imageTitle;
   popupCaption.textContent = imageTitle;
