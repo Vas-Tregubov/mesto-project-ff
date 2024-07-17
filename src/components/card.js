@@ -1,8 +1,10 @@
-import { cardTemplate, popupTypeImage, placesList } from "../index.js";
+import { popupTypeImage, placesList } from "../index.js";
 import { openModal } from "./modal.js";
 import { initialCards } from "../scripts/cards.js";
 
-function addCard(card, deleteCard, cardLike, imageIncrease) {
+const cardTemplate = document.querySelector("#card-template").content;
+
+function addCard(card, deleteCard, toggleCardLike, increaseCardImage) {
   const cardElement = cardTemplate.querySelector(".card").cloneNode("true");
   cardElement.querySelector(".card__image").src = card.link;
   cardElement.querySelector(".card__image").alt = card.name;
@@ -16,8 +18,8 @@ function addEventListenersToCards() {
   const likeItems = document.querySelectorAll(".card__like-button");
   const cardImages = document.querySelectorAll(".card__image");
 
-  likeItems.forEach((item) => item.addEventListener("click", cardLike));
-  cardImages.forEach((image) => image.addEventListener("click", imageIncrease));
+  likeItems.forEach((item) => item.addEventListener("click", toggleCardLike));
+  cardImages.forEach((image) => image.addEventListener("click", increaseCardImage));
 }
 
 function renderInitialCards() {
@@ -36,12 +38,12 @@ function deleteCard(evt) {
   card.remove();
 }
 
-function cardLike(evt) {
+function toggleCardLike(evt) {
   const like = evt.target.closest(".card__like-button");
   like.classList.toggle("card__like-button_is-active");
 }
 
-function imageIncrease(evt) {
+function increaseCardImage(evt) {
   const image = evt.target.closest(".card__image");
   const imageLink = image.src;
   const imageTitle = image.alt;
@@ -56,8 +58,8 @@ function imageIncrease(evt) {
 export {
   addCard,
   deleteCard,
-  cardLike,
-  imageIncrease,
+  // toggleCardLike,
+  increaseCardImage,
   renderNewCard,
   renderInitialCards,
 };

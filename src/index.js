@@ -3,8 +3,8 @@ import { initialCards } from "./scripts/cards.js";
 import {
   addCard,
   deleteCard,
-  cardLike,
-  imageIncrease,
+  // toggleCardLike,
+  // imageIncrease,
   renderInitialCards,
 } from "./components/card.js";
 import {
@@ -14,9 +14,6 @@ import {
   handleFormSubmitCard,
 } from "./components/modal.js";
 
-// card template and card list variables
-
-const cardTemplate = document.querySelector("#card-template").content;
 const placesList = document.querySelector(".places__list");
 
 // profile information
@@ -50,7 +47,6 @@ popupNewCardForm.addEventListener("submit", handleFormSubmitCard);
 renderInitialCards();
 
 export {
-  cardTemplate,
   placesList,
   popupEditProfileForm,
   profileTitle,
