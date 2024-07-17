@@ -3,17 +3,12 @@ import {
   profileTitle,
   profileDescription,
   renderInitialCards,
-  renderNewCard
+  renderNewCard,
+  profileFormName,
+  profileFormDescription,
 } from "../index.js";
 import { addCard } from "./card.js";
 import { initialCards } from "../scripts/cards.js";
-
-const profileFormName = document.querySelector(".popup__input_type_name");
-profileFormName.value = "Жак-Ив Кусто";
-const profileFormDescription = document.querySelector(
-  ".popup__input_type_description"
-);
-profileFormDescription.value = "Исследователь океана";
 
 const cardFormName = document.querySelector(".popup__input_type_card-name");
 const cardFormLink = document.querySelector(".popup__input_type_url");
@@ -22,11 +17,7 @@ function openModal(obj) {
   obj.classList.add("popup_is-opened");
   const closeModalCross = obj.querySelector(".popup__close");
   closeModalCross.addEventListener("click", () => closeModal(obj));
-  document.addEventListener("keydown", (evt) => {
-    if (evt.code == "Escape") {
-      closeModal(obj);
-    }
-  });
+  document.addEventListener("keydown", closeByEsc);
   window.addEventListener("click", (evt) => {
     if (evt.target == obj) {
       closeModal(obj);
@@ -34,19 +25,24 @@ function openModal(obj) {
   });
 }
 
+function closeByEsc(evt) {
+  if (evt.key === "Escape") {
+    const openedPopup = document.querySelector(".popup_is-opened");
+    closeModal(openedPopup);
+  }
+}
+
 function closeModal(obj) {
   obj.classList.remove("popup_is-opened");
-  const inputs = obj.querySelectorAll("input");
   const closeModalCross = obj.querySelector(".popup__close");
-  closeModalCross.removeEventListener("click", () => closeModal(obj));
-  window.removeEventListener("click", () => closeModal(obj));
-  document.removeEventListener("keyup", () => closeModal(obj));
+  closeModalCross.removeEventListener("click", closeModal);
+  window.removeEventListener("click", closeModal);
+  document.removeEventListener("keydown", closeByEsc);
+  const form = obj.querySelector("form");
   const timerRename = setTimeout(() => {
-    inputs.forEach(function (item) {
-      item.value = "";
-    });
-    profileFormName.value = "Жак-Ив Кусто";
-    profileFormDescription.value = "Исследователь океана";
+    if (form) {
+      form.reset();
+    }
   }, 1000);
 }
 

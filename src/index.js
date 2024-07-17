@@ -1,10 +1,6 @@
 import "./pages/index.css";
 import { initialCards } from "./scripts/cards.js";
-import {
-  addCard,
-  deleteCard,
-  toggleCardLike,
-} from "./components/card.js";
+import { addCard, deleteCard, toggleCardLike } from "./components/card.js";
 import {
   openModal,
   closeModal,
@@ -18,6 +14,11 @@ const placesList = document.querySelector(".places__list");
 
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
+
+const profileFormName = document.querySelector(".popup__input_type_name");
+const profileFormDescription = document.querySelector(
+  ".popup__input_type_description"
+);
 
 // profile edit
 
@@ -47,12 +48,16 @@ popupNewCardForm.addEventListener("submit", handleFormSubmitCard);
 function renderInitialCards() {
   initialCards.forEach((card) => {
     const { name, link } = card;
-    placesList.append(addCard(link, name, deleteCard, toggleCardLike, increaseCardImage));
+    placesList.append(
+      addCard(link, name, deleteCard, toggleCardLike, increaseCardImage)
+    );
   });
 }
 
 function renderNewCard(link, name) {
-  placesList.prepend(addCard(link, name, deleteCard, toggleCardLike, increaseCardImage));
+  placesList.prepend(
+    addCard(link, name, deleteCard, toggleCardLike, increaseCardImage)
+  );
 }
 
 const popupImage = popupTypeImage.querySelector(".popup__image");
@@ -72,6 +77,8 @@ renderInitialCards();
 
 export {
   placesList,
+  profileFormName,
+  profileFormDescription,
   popupEditProfileForm,
   profileTitle,
   profileDescription,
