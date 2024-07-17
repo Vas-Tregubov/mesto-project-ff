@@ -4,8 +4,6 @@ import {
   addCard,
   deleteCard,
   // toggleCardLike,
-  // imageIncrease,
-  renderInitialCards,
 } from "./components/card.js";
 import {
   openModal,
@@ -44,6 +42,34 @@ popupEditProfileForm.addEventListener("submit", handleFormSubmitProfile);
 const popupNewCardForm = document.forms["new-place"];
 popupNewCardForm.addEventListener("submit", handleFormSubmitCard);
 
+// functions
+
+function renderInitialCards() {
+  initialCards.forEach((card) => {
+    const { name, link } = card;
+    placesList.append(addCard(link, name, deleteCard));
+  });
+}
+  // addEventListenersToCards();
+
+
+function renderNewCard(link, name) {
+  placesList.prepend(addCard(link, name, deleteCard));
+  // addEventListenersToCards();
+}
+
+function increaseCardImage(evt) {
+  const image = evt.target.closest(".card__image");
+  const imageLink = image.src;
+  const imageTitle = image.alt;
+  const popupImage = popupTypeImage.querySelector(".popup__image");
+  const popupCaption = popupTypeImage.querySelector(".popup__caption");
+  popupImage.src = imageLink;
+  popupImage.alt = imageTitle;
+  popupCaption.textContent = imageTitle;
+  openModal(popupTypeImage);
+}
+
 renderInitialCards();
 
 export {
@@ -52,4 +78,6 @@ export {
   profileTitle,
   profileDescription,
   popupTypeImage,
+  renderNewCard,
+  increaseCardImage,
 };

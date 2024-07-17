@@ -3,8 +3,9 @@ import {
   profileTitle,
   profileDescription,
   renderInitialCards,
+  renderNewCard
 } from "../index.js";
-import { addCard, renderNewCard } from "./card.js";
+import { addCard } from "./card.js";
 import { initialCards } from "../scripts/cards.js";
 
 const profileFormName = document.querySelector(".popup__input_type_name");
