@@ -1,6 +1,4 @@
-import { popupTypeImage, placesList, increaseCardImage } from "../index.js";
-import { openModal } from "./modal.js";
-import { initialCards } from "../scripts/cards.js";
+import { increaseCardImage } from "../index.js";
 
 const cardTemplate = document.querySelector("#card-template").content;
 
