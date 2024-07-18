@@ -1,13 +1,15 @@
 function openModal(obj) {
   obj.classList.add("popup_is-opened");
-  const closeModalCross = obj.querySelector(".popup__close");
-  closeModalCross.addEventListener("click", () => closeModal(obj));
+  obj.querySelector(".popup__close").addEventListener("click", closeByCross);
   document.addEventListener("keydown", closeByEsc);
-  window.addEventListener("click", (evt) => {
-    if (evt.target == obj) {
-      closeModal(obj);
-    }
-  });
+  window.addEventListener("click", closeByClickOnOverlay);
+}
+
+function closeByClickOnOverlay(evt) {
+  const openedPopup = document.querySelector(".popup_is-opened");
+  if (evt.target === openedPopup) {
+    closeModal(openedPopup);
+  }
 }
 
 function closeByEsc(evt) {
@@ -17,11 +19,16 @@ function closeByEsc(evt) {
   }
 }
 
+function closeByCross() {
+  const openedPopup = document.querySelector(".popup_is-opened");
+  closeModal(openedPopup);
+}
+
 function closeModal(obj) {
   obj.classList.remove("popup_is-opened");
   const closeModalCross = obj.querySelector(".popup__close");
-  closeModalCross.removeEventListener("click", closeModal);
-  window.removeEventListener("click", closeModal);
+  closeModalCross.removeEventListener("click", closeByCross);
+  window.removeEventListener("click", closeByClickOnOverlay);
   document.removeEventListener("keydown", closeByEsc);
   const form = obj.querySelector("form");
   setTimeout(() => {
