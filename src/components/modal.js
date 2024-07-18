@@ -30,11 +30,24 @@ function closeModal(obj) {
   closeModalCross.removeEventListener("click", closeByCross);
   window.removeEventListener("click", closeByClickOnOverlay);
   document.removeEventListener("keydown", closeByEsc);
-  const form = obj.querySelector("form");
+  const fields = obj.querySelectorAll("input, textarea, select");
   setTimeout(() => {
-    if (form) {
-      form.reset();
-    }
+    fields.forEach((field) => {
+      if (
+        field.tagName.toLowerCase() === "input" &&
+        (field.type === "text" ||
+          field.type === "textarea" ||
+          field.type === "number" ||
+          field.type === "email" ||
+          field.type === "url")
+      ) {
+        field.value = field.defaultValue;
+      } else if (field.tagName.toLowerCase() === "textarea") {
+        field.value = field.defaultValue;
+      } else if (field.tagName.toLowerCase() === "select") {
+        field.value = field.defaultValue;
+      }
+    });
   }, 1000);
 }
 
