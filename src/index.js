@@ -1,12 +1,7 @@
 import "./pages/index.css";
 import { initialCards } from "./scripts/cards.js";
 import { addCard, deleteCard, toggleCardLike } from "./components/card.js";
-import {
-  openModal,
-  closeModal,
-  handleFormSubmitProfile,
-  handleFormSubmitCard,
-} from "./components/modal.js";
+import { openModal, closeModal } from "./components/modal.js";
 
 const placesList = document.querySelector(".places__list");
 
@@ -31,6 +26,11 @@ const popupEditProfile = document.querySelector(".popup_type_edit");
 const profileAddButton = document.querySelector(".profile__add-button");
 profileAddButton.addEventListener("click", () => openModal(popupNewCard));
 const popupNewCard = document.querySelector(".popup_type_new-card");
+
+// card form
+
+const cardFormName = document.querySelector(".popup__input_type_card-name");
+const cardFormLink = document.querySelector(".popup__input_type_url");
 
 // card pop-up
 
@@ -73,6 +73,23 @@ function increaseCardImage(evt) {
   openModal(popupTypeImage);
 }
 
+function handleFormSubmitProfile(evt) {
+  evt.preventDefault();
+  const profileName = profileFormName.value;
+  profileTitle.textContent = profileName;
+  const profileJob = profileFormDescription.value;
+  profileDescription.textContent = profileJob;
+  closeModal(evt.target.closest(".popup"));
+}
+
+function handleFormSubmitCard(evt) {
+  evt.preventDefault();
+  const cardName = cardFormName.value;
+  const cardLink = cardFormLink.value;
+  renderNewCard(cardLink, cardName);
+  closeModal(evt.target.closest(".popup"));
+}
+
 renderInitialCards();
 
 export {
@@ -85,4 +102,8 @@ export {
   popupTypeImage,
   renderNewCard,
   increaseCardImage,
+  handleFormSubmitCard,
+  handleFormSubmitProfile,
+  cardFormLink,
+  cardFormName,
 };

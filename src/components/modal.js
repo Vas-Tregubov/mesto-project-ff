@@ -1,18 +1,3 @@
-import {
-  popupEditProfile,
-  profileTitle,
-  profileDescription,
-  renderInitialCards,
-  renderNewCard,
-  profileFormName,
-  profileFormDescription,
-} from "../index.js";
-import { addCard } from "./card.js";
-import { initialCards } from "../scripts/cards.js";
-
-const cardFormName = document.querySelector(".popup__input_type_card-name");
-const cardFormLink = document.querySelector(".popup__input_type_url");
-
 function openModal(obj) {
   obj.classList.add("popup_is-opened");
   const closeModalCross = obj.querySelector(".popup__close");
@@ -39,28 +24,11 @@ function closeModal(obj) {
   window.removeEventListener("click", closeModal);
   document.removeEventListener("keydown", closeByEsc);
   const form = obj.querySelector("form");
-  const timerRename = setTimeout(() => {
+  setTimeout(() => {
     if (form) {
       form.reset();
     }
   }, 1000);
 }
 
-function handleFormSubmitProfile(evt) {
-  evt.preventDefault();
-  const profileName = profileFormName.value;
-  profileTitle.textContent = profileName;
-  const profileJob = profileFormDescription.value;
-  profileDescription.textContent = profileJob;
-  closeModal(evt.target.closest(".popup"));
-}
-
-function handleFormSubmitCard(evt) {
-  evt.preventDefault();
-  const cardName = cardFormName.value;
-  const cardLink = cardFormLink.value;
-  renderNewCard(cardLink, cardName);
-  closeModal(evt.target.closest(".popup"));
-}
-
-export { openModal, closeModal, handleFormSubmitProfile, handleFormSubmitCard };
+export { openModal, closeModal };
