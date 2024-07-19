@@ -1,5 +1,3 @@
-import { increaseCardImage } from "../index.js";
-
 const cardTemplate = document.querySelector("#card-template").content;
 
 function addCard(link, name, deleteCard, toggleCardLike, increaseCardImage) {
