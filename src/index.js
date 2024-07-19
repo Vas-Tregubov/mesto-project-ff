@@ -22,6 +22,9 @@ const profileFormDescription = document.querySelector(
 );
 const profileAddButton = document.querySelector(".profile__add-button");
 profileEditButton.addEventListener("click", () => openModal(popupEditProfile));
+profileEditButton.addEventListener("click", () =>
+  resetFields(popupEditProfile)
+);
 
 // card addition
 
@@ -29,6 +32,7 @@ const popupNewCard = document.querySelector(".popup_type_new-card");
 const cardFormName = document.querySelector(".popup__input_type_card-name");
 const cardFormLink = document.querySelector(".popup__input_type_url");
 profileAddButton.addEventListener("click", () => openModal(popupNewCard));
+profileAddButton.addEventListener("click", () => resetFields(popupNewCard));
 
 function renderNewCard(link, name) {
   placesList.prepend(
@@ -76,7 +80,7 @@ function handleFormSubmitCard(evt) {
   closeModal(evt.target.closest(".popup"));
 }
 
-// functions
+// common functions
 
 function renderInitialCards() {
   initialCards.forEach((card) => {
@@ -89,7 +93,6 @@ function renderInitialCards() {
 
 function resetFields(obj) {
   const fields = obj.querySelectorAll("input, textarea, select");
-  // setTimeout(() => {
   fields.forEach((field) => {
     if (
       field.tagName.toLowerCase() === "input" &&
@@ -106,7 +109,6 @@ function resetFields(obj) {
       field.value = field.defaultValue;
     }
   });
-  // }, 1000);
 }
 
 renderInitialCards();
