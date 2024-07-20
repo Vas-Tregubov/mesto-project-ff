@@ -21,18 +21,20 @@ const profileFormDescription = document.querySelector(
   ".popup__input_type_description"
 );
 const profileAddButton = document.querySelector(".profile__add-button");
-profileEditButton.addEventListener("click", () => openModal(popupEditProfile));
-profileEditButton.addEventListener("click", () =>
-  resetFields(popupEditProfile)
-);
+profileEditButton.addEventListener("click", () => {
+  openModal(popupEditProfile);
+  resetFields(popupEditProfile);
+});
 
 // card addition
 
 const popupNewCard = document.querySelector(".popup_type_new-card");
 const cardFormName = document.querySelector(".popup__input_type_card-name");
 const cardFormLink = document.querySelector(".popup__input_type_url");
-profileAddButton.addEventListener("click", () => openModal(popupNewCard));
-profileAddButton.addEventListener("click", () => resetFields(popupNewCard));
+profileAddButton.addEventListener("click", () => {
+  openModal(popupNewCard);
+  resetFields(popupNewCard);
+});
 
 function renderNewCard(link, name) {
   placesList.prepend(
