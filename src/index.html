@@ -23,7 +23,7 @@
           <div
             class="profile__image"
             style="
-              background-image: url(&quot;<%=require(&quot;./images/avatar.jpg&quot;)%>&quot;);
+              background-image: url('<%=require('./images/avatar.jpg')%>');
             "
           ></div>
           <div class="profile__info">
@@ -90,7 +90,7 @@
               maxlength="30"
               required
             />
-            <span class="popup__input-error placename-input-error"></span>
+            <span class="popup__input-error placename-input-error" ></span>
             <input
               type="url"
               id="url-input"
@@ -99,7 +99,7 @@
               placeholder="Ссылка на картинку"
               required
             />
-            <span class="popup__input-error url-input-error"></span>
+            <span class="popup__input-error url-input-error" ></span>
             <button type="submit" class="button popup__button">
               Сохранить
             </button>

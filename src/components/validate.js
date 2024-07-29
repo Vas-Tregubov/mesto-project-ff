@@ -1,11 +1,11 @@
-showInputError() {
+// showInputError() {
 
-}
+// }
 
-hideInputError() {
+// hideInputError() {
 
-}
+// }
 
-isValid(input, showInputError, hideInputError) {
+// isValid(input, showInputError, hideInputError) {
 
-}
+// }
