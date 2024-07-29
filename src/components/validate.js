@@ -1,4 +1,4 @@
-// showInputError() {
+// showInputError(input, errorMessage) {
 
 // }
 
@@ -6,6 +6,8 @@
 
 // }
 
-// isValid(input, showInputError, hideInputError) {
+function isValid(input, showInputError, hideInputError) {
+  console.log("Is valid");
+}
 
-// }
+export { isValid };

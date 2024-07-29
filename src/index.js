@@ -2,6 +2,7 @@ import "./pages/index.css";
 import { initialCards } from "./scripts/cards.js";
 import { addCard, deleteCard, toggleCardLike } from "./components/card.js";
 import { openModal, closeModal } from "./components/modal.js";
+import { isValid } from "./components/validate.js";
 
 // list of cards
 
@@ -114,5 +115,25 @@ function resetFields(obj) {
 }
 
 renderInitialCards();
+
+// validation elements
+
+function setEventListeners(formElement) {
+  const inputList = Array.from(formElement.querySelectorAll(".popup__input"));
+  inputList.forEach((inputElement) => {
+    inputElement.addEventListener("input", () => {
+      isValid(formElement, inputElement);
+    });
+  });
+}
+
+const enableValidation = () => {
+  const formList = Array.from(document.querySelectorAll(".popup__form"));
+  formList.forEach((formElement) => {
+    setEventListeners(formElement);
+  });
+};
+
+enableValidation();
 
 export { increaseCardImage };
