@@ -18,6 +18,12 @@
   border-bottom-color: rgba(255, 0, 0, 1);
 } 
 
+.popup__input-error {
+  color: rgba(255, 0, 0, 1);
+  font-size: 12px;
+  line-height: 1.21;
+}
+
 @media screen and (max-width: 568px) {
   .popup__title {
     font-size: 12px;
