@@ -1,13 +1,24 @@
-// showInputError(input, errorMessage) {
+function showInputError(formElement, inputElement, errorMessage) {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  inputElement.classList.add('popup__input_type_error');
+  errorElement.textContent = errorMessage;
+  errorElement.classList.add('popup__input-error_active');
+}
 
-// }
+function hideInputError(formElement, inputElement) {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  inputElement.classList.remove('popup__input_type_error');
+  errorElement.classList.remove('popup__input-error_active');
+  errorElement.textContent = '';
+}
 
-// hideInputError() {
-
-// }
-
-function isValid(input, showInputError, hideInputError) {
-  console.log("Is valid");
+function isValid(formElement, inputElement) {
+  if (!inputElement.validity.valid) {
+    showInputError(formElement, inputElement, inputElement.validationMessage);
+    console.log('CHECK');
+  } else {
+    hideInputError(formElement, inputElement);
+  }
 }
 
 export { isValid };
