@@ -19,7 +19,7 @@
   cursor: pointer;
 }
 
-.popup__button:disabled {
+.popup__button-inactive {
   background: #F6F6F6;
   color: #000;
   border: 1px solid #000;
