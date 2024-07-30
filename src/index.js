@@ -2,7 +2,7 @@ import "./pages/index.css";
 import { initialCards } from "./scripts/cards.js";
 import { addCard, deleteCard, toggleCardLike } from "./components/card.js";
 import { openModal, closeModal } from "./components/modal.js";
-import { isValid } from "./components/validate.js";
+import { isValid, hideInputError } from "./components/validate.js";
 
 // list of cards
 
@@ -25,6 +25,7 @@ const profileAddButton = document.querySelector(".profile__add-button");
 profileEditButton.addEventListener("click", () => {
   openModal(popupEditProfile);
   resetFields(popupEditProfile);
+  clearValidationErrors(popupEditProfile);
 });
 
 // card addition
@@ -35,6 +36,7 @@ const cardFormLink = document.querySelector(".popup__input_type_url");
 profileAddButton.addEventListener("click", () => {
   openModal(popupNewCard);
   resetFields(popupNewCard);
+  clearValidationErrors(popupNewCard);
 });
 
 function renderNewCard(link, name) {
@@ -81,6 +83,7 @@ function handleFormSubmitCard(evt) {
   const cardLink = cardFormLink.value;
   renderNewCard(cardLink, cardName);
   closeModal(evt.target.closest(".popup"));
+  resetFields(popupNewCardForm);
 }
 
 // common functions
@@ -112,11 +115,20 @@ function resetFields(obj) {
       field.value = field.defaultValue;
     }
   });
+  // const buttonElement = obj.querySelector(".popup__button");
+  // toggleButtonState(fields, buttonElement);
 }
 
 renderInitialCards();
 
 // validation elements
+
+function clearValidationErrors(formElement) {
+  const inputList = Array.from(formElement.querySelectorAll(".popup__input"));
+  inputList.forEach((inputElement) => {
+    hideInputError(formElement, inputElement);
+  });
+}
 
 function setEventListeners(formElement) {
   const inputList = Array.from(formElement.querySelectorAll(".popup__input"));
