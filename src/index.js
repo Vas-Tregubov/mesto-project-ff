@@ -2,7 +2,12 @@ import "./pages/index.css";
 import { initialCards } from "./scripts/cards.js";
 import { addCard, deleteCard, toggleCardLike } from "./components/card.js";
 import { openModal, closeModal } from "./components/modal.js";
-import { isValid, hideInputError } from "./components/validate.js";
+import {
+  enableValidation,
+  toggleButtonState,
+  clearValidationErrors,
+} from "./components/validation.js";
+import { settings } from "./components/validation-settings.js";
 
 // list of cards
 
@@ -115,56 +120,13 @@ function resetFields(obj) {
       field.value = field.defaultValue;
     }
   });
-  // const buttonElement = obj.querySelector(".popup__button");
-  // toggleButtonState(fields, buttonElement);
+  const inputList = Array.from(obj.querySelectorAll(".popup__input"));
+  const buttonElement = obj.querySelector(".popup__button");
+  toggleButtonState(inputList, buttonElement, settings);
 }
 
 renderInitialCards();
 
-// validation elements
-
-function clearValidationErrors(formElement) {
-  const inputList = Array.from(formElement.querySelectorAll(".popup__input"));
-  inputList.forEach((inputElement) => {
-    hideInputError(formElement, inputElement);
-  });
-}
-
-function setEventListeners(formElement) {
-  const inputList = Array.from(formElement.querySelectorAll(".popup__input"));
-  const buttonElement = formElement.querySelector(".popup__button");
-  toggleButtonState(inputList, buttonElement);
-  inputList.forEach((inputElement) => {
-    inputElement.addEventListener("input", () => {
-      isValid(formElement, inputElement);
-      toggleButtonState(inputList, buttonElement);
-    });
-  });
-}
-
-const enableValidation = () => {
-  const formList = Array.from(document.querySelectorAll(".popup__form"));
-  formList.forEach((formElement) => {
-    setEventListeners(formElement);
-  });
-};
-
-enableValidation();
-
-function hasInvalidInput(inputList) {
-  return inputList.some((inputElement) => {
-    return !inputElement.validity.valid;
-  });
-}
-
-function toggleButtonState(inputList, buttonElement) {
-  if (hasInvalidInput(inputList)) {
-    buttonElement.disabled = true;
-    buttonElement.classList.add("popup__button-inactive");
-  } else {
-    buttonElement.disabled = false;
-    buttonElement.classList.remove("popup__button-inactive");
-  }
-}
+enableValidation(settings);
 
 export { increaseCardImage };
