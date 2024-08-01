@@ -17,6 +17,7 @@ const placesList = document.querySelector(".places__list");
 
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
+const profileImage = document.querySelector(".profile__image");
 
 // profile edit
 
@@ -128,5 +129,30 @@ function resetFields(obj) {
 renderInitialCards();
 
 enableValidation(settings);
+
+function getUserInfoFromServer() {
+  return fetch("https://nomoreparties.co/v1/wff-cohort-19/users/me", {
+    method: "GET",
+    headers: {
+      authorization: "a8fbcde7-37e5-4c27-96cb-428c4a4c4a64",
+    },
+  })
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Что-то пошло не так: ${res.status}`);
+    })
+    .then((user) => {
+      profileTitle.textContent = user.name;
+      profileDescription.textContent = user.about;
+      profileImage.style.backgroundImage = `url('${user.avatar}')`; 
+    })
+    .catch((err) => {
+      console.log(`${err} Ошибка. Запрос не выполнен`);
+    });
+}
+
+getUserInfoFromServer();
 
 export { increaseCardImage };
