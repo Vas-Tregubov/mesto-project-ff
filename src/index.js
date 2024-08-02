@@ -12,6 +12,7 @@ import {
   getAllCards,
   setProfileInfo,
   postNewCard,
+  MYID,
 } from "./components/api.js";
 
 // list of cards
@@ -50,9 +51,18 @@ profileAddButton.addEventListener("click", () => {
   clearValidationErrors(popupNewCard);
 });
 
-function renderNewCard(link, name) {
+function renderNewCard(name, link) {
   placesList.prepend(
-    addCard(link, name, deleteCard, toggleCardLike, increaseCardImage)
+    addCard(
+      name,
+      link,
+      undefined,
+      undefined,
+      undefined,
+      deleteCard,
+      toggleCardLike,
+      increaseCardImage
+    )
   );
 }
 
@@ -97,8 +107,8 @@ function handleFormSubmitProfile(evt) {
 
 function handleFormSubmitCard(evt) {
   evt.preventDefault();
-  const name = cardFormName.value;
-  const link = cardFormLink.value;
+  let name = cardFormName.value;
+  let link = cardFormLink.value;
   postNewCard(name, link)
     .then((card) => {
       name = card.name;
@@ -158,12 +168,23 @@ if (profileTitle && profileDescription && profileImage) {
 }
 
 getAllCards().then((allCards) => {
+  // console.log(allCards);
   allCards.forEach((card) => {
-    const { name, link, likes, owner } = card;
+    const { name, link, likes, owner, id } = card;
     const likeCount = likes.length;
     const ownerId = owner._id;
+    const cardId = card._id;
     placesList.append(
-      addCard(name, link, likeCount, ownerId, deleteCard, toggleCardLike, increaseCardImage)
+      addCard(
+        name,
+        link,
+        likeCount,
+        ownerId,
+        cardId,
+        deleteCard,
+        toggleCardLike,
+        increaseCardImage
+      )
     );
   });
 });

@@ -54,4 +54,13 @@ function postNewCard(name, link) {
   }).then(handleResponse);
 }
 
-export { getUserInformation, getAllCards, setProfileInfo, postNewCard };
+function deleteCardFromServer(cardId) {
+  return fetch(`${PATH}/cards/${cardId}`, {
+    method: "DELETE",
+    headers: {
+      authorization: TOKEN,
+    },
+  }).then(handleResponse);
+}
+
+export { getUserInformation, getAllCards, setProfileInfo, postNewCard, deleteCardFromServer };
