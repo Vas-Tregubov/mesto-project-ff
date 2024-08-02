@@ -81,10 +81,17 @@ popupNewCardForm.addEventListener("submit", handleFormSubmitCard);
 
 function handleFormSubmitProfile(evt) {
   evt.preventDefault();
-  const profileName = profileFormName.value;
-  profileTitle.textContent = profileName;
-  const profileJob = profileFormDescription.value;
-  profileDescription.textContent = profileJob;
+  const name = profileFormName.value;
+  const about = profileFormDescription.value;
+  setProfileInfo(name, about)
+    .then((user) => {
+      profileTitle.textContent = user.name;
+      profileDescription.textContent = user.about;
+      profileImage.style.backgroundImage = `url('${user.avatar}')`;
+    })
+    .catch((err) => {
+      console.error(`Ошибка обновления профиля: ${err}`);
+    });
   closeModal(evt.target.closest(".popup"));
 }
 
@@ -150,12 +157,5 @@ getAllCards().then((allCards) => {
     );
   });
 });
-
-// setProfileInfo().then(() => {
-//   body: JSON.stringify({
-//     name: "Freddie Gibson",
-//     about: "Musician",
-//   }),
-// });
 
 export { increaseCardImage };

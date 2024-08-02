@@ -26,13 +26,17 @@ function getAllCards() {
   }).then(handleResponse);
 }
 
-function setProfileInfo() {
+function setProfileInfo(name, about) {
   return fetch(PATH + "users/me", {
     method: "PATCH",
     headers: {
       authorization: TOKEN,
       "Content-Type": "application/json",
     },
+    body: JSON.stringify({
+      name: name,
+      about: about,
+    }),
   }).then(handleResponse);
 }
 
