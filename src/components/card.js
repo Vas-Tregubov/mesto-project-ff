@@ -1,4 +1,4 @@
-import { deleteCardFromServer } from "./api";
+import { deleteCardFromServer, likeCardWithSaveOnServer } from "./api";
 
 export const MYID = "e5f96a8c118edfdc88d8f400";
 
@@ -12,7 +12,7 @@ function addCard(
   cardId = null,
   deleteCard,
   toggleCardLike,
-  increaseCardImage,
+  increaseCardImage
 ) {
   const cardElement = cardTemplate.querySelector(".card").cloneNode("true");
   cardElement.querySelector(".card__image").src = link;
@@ -23,7 +23,10 @@ function addCard(
   const likeItem = cardElement.querySelector(".card__like-button");
   const likeCounter = cardElement.querySelector(".card__like-count");
   likeCounter.textContent = likeCount;
-  likeItem.addEventListener("click", toggleCardLike);
+  likeItem.addEventListener("click", (evt) => {
+    const isLiked = toggleCardLike(evt, cardId);
+    updateLikeCount(likeCounter, isLiked, cardId);
+  });
   const cardImage = cardElement.querySelector(".card__image");
   cardImage.addEventListener("click", increaseCardImage);
   deleteButton.addEventListener("click", (evt) => deleteCard(evt, cardId));
@@ -36,18 +39,28 @@ function deleteCard(evt, cardId) {
   deleteCardFromServer(cardId);
 }
 
-function toggleCardLike(evt) {
+function toggleCardLike(evt, cardId) {
   const like = evt.target.closest(".card__like-button");
   like.classList.toggle("card__like-button_is-active");
+  const isLiked = like.classList.contains("card__like-button_is-active");
+  likeCardWithSaveOnServer(cardId, isLiked);
+  return isLiked;
+}
+
+function updateLikeCount(likeCounter, isLiked, cardId) {
+  let likeCount = parseInt(likeCounter.textContent, 10);
+  likeCount = isLiked ? likeCount + 1 : likeCount - 1;
+  likeCounter.textContent = likeCount;
+
+  likeCardWithSaveOnServer(cardId, isLiked).catch((error) => {
+    console.error(`Ошибка обновления лайков на сервере: ${error}`);
+    likeCounter.textContent = isLiked ? likeCount - 1 : likeCount + 1;
+  });
 }
 
 function compareCardholder(ownerId, button) {
-  if (!ownerId) {
-    console.log('PLS HELP ME');
-  } else {
-    if (ownerId != MYID) {
-      button.style.display = "none";
-    }
+  if (ownerId && ownerId != MYID) {
+    button.style.display = "none";
   }
 }
 

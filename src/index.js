@@ -168,7 +168,6 @@ if (profileTitle && profileDescription && profileImage) {
 }
 
 getAllCards().then((allCards) => {
-  // console.log(allCards);
   allCards.forEach((card) => {
     const { name, link, likes, owner, id } = card;
     const likeCount = likes.length;

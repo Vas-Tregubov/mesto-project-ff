@@ -55,3 +55,11 @@ export const deleteCardFromServer = (cardId) => {
     headers: config.headers,
   }).then(handleResponse);
 };
+
+export const likeCardWithSaveOnServer = (cardId, isLiked) => {
+  const method = isLiked ? "PUT" : "DELETE";
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+    method: method,
+    headers: config.headers,
+  }).then(handleResponse);
+};
