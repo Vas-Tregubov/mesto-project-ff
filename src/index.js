@@ -8,7 +8,11 @@ import {
   clearValidationErrors,
 } from "./components/validation.js";
 import { settings } from "./components/validation-settings.js";
-import { getUserInformation, getAllCards } from "./components/api.js";
+import {
+  getUserInformation,
+  getAllCards,
+  setProfileInfo,
+} from "./components/api.js";
 
 // list of cards
 
@@ -122,15 +126,21 @@ enableValidation(settings);
 
 // API functions
 
-getUserInformation()
-  .then((user) => {
-    profileTitle.textContent = user.name;
-    profileDescription.textContent = user.about;
-    profileImage.style.backgroundImage = `url('${user.avatar}')`;
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+const catchError = (err) => {
+  console.error(err);
+};
+
+if (profileTitle && profileDescription && profileImage) {
+  getUserInformation()
+    .then((user) => {
+      profileTitle.textContent = user.name;
+      profileDescription.textContent = user.about;
+      profileImage.style.backgroundImage = `url('${user.avatar}')`;
+    })
+    .catch(catchError);
+} else {
+  console.error("Ошибка: Не удалось найти элементы DOM");
+}
 
 getAllCards().then((allCards) => {
   allCards.forEach((card) => {
@@ -140,5 +150,12 @@ getAllCards().then((allCards) => {
     );
   });
 });
+
+// setProfileInfo().then(() => {
+//   body: JSON.stringify({
+//     name: "Freddie Gibson",
+//     about: "Musician",
+//   }),
+// });
 
 export { increaseCardImage };
