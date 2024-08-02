@@ -8,7 +8,7 @@ import {
   clearValidationErrors,
 } from "./components/validation.js";
 import { settings } from "./components/validation-settings.js";
-import { getUserInformation } from "./components/api.js";
+import { getUserInformation, getAllCards } from "./components/api.js";
 
 // list of cards
 
@@ -93,16 +93,7 @@ function handleFormSubmitCard(evt) {
   resetFields(popupNewCardForm);
 }
 
-// common functions
-
-function renderInitialCards() {
-  initialCards.forEach((card) => {
-    const { name, link } = card;
-    placesList.append(
-      addCard(link, name, deleteCard, toggleCardLike, increaseCardImage)
-    );
-  });
-}
+// fields validation and resets
 
 function resetFields(obj) {
   const fields = obj.querySelectorAll("input, textarea, select");
@@ -127,9 +118,9 @@ function resetFields(obj) {
   toggleButtonState(inputList, buttonElement, settings);
 }
 
-renderInitialCards();
-
 enableValidation(settings);
+
+// API functions
 
 getUserInformation()
   .then((user) => {
@@ -140,5 +131,14 @@ getUserInformation()
   .catch((err) => {
     console.log(err);
   });
+
+getAllCards().then((allCards) => {
+  allCards.forEach((card) => {
+    const { name, link } = card;
+    placesList.append(
+      addCard(link, name, deleteCard, toggleCardLike, increaseCardImage)
+    );
+  });
+});
 
 export { increaseCardImage };
