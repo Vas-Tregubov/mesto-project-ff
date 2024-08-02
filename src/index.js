@@ -159,11 +159,11 @@ if (profileTitle && profileDescription && profileImage) {
 
 getAllCards().then((allCards) => {
   allCards.forEach((card) => {
-    const { name, link, likes } = card;
+    const { name, link, likes, owner } = card;
     const likeCount = likes.length;
-    // console.log(likeCount);
+    const ownerId = owner._id;
     placesList.append(
-      addCard(name, link, likeCount, deleteCard, toggleCardLike, increaseCardImage)
+      addCard(name, link, likeCount, ownerId, deleteCard, toggleCardLike, increaseCardImage)
     );
   });
 });
