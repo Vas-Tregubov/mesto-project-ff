@@ -1,26 +1,19 @@
-import { profileTitle, profileDescription, profileImage } from "../index";
+const PATH = "https://nomoreparties.co/v1/wff-cohort-19/";
+const TOKEN = "a8fbcde7-37e5-4c27-96cb-428c4a4c4a64";
+
+const handleResponse = (response) => {
+  if (response.ok) {
+    return response.json();
+  }
+};
 
 function getUserInformation() {
-  return fetch("https://nomoreparties.co/v1/wff-cohort-19/users/me", {
+  return fetch(PATH + "users/me", {
     method: "GET",
     headers: {
-      authorization: "a8fbcde7-37e5-4c27-96cb-428c4a4c4a64",
+      authorization: TOKEN,
     },
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Что-то пошло не так: ${res.status}`);
-    })
-    .then((user) => {
-      profileTitle.textContent = user.name;
-      profileDescription.textContent = user.about;
-      profileImage.style.backgroundImage = `url('${user.avatar}')`;
-    })
-    .catch((err) => {
-      console.log(`${err} Ошибка. Запрос не выполнен`);
-    });
+  }).then(handleResponse);
 }
 
 // function getCardsFromServer() {
@@ -36,10 +29,10 @@ function getUserInformation() {
 //       }
 //       return Promise.reject(`Что-то пошло не так: ${res.status}`);
 //     })
-    
+
 //     .catch((err) => {
 //       console.log(`${err} Ошибка. Запрос не выполнен`);
 //     });
 // }
 
-export { getUserInformation }
+export { getUserInformation };

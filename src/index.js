@@ -131,10 +131,14 @@ renderInitialCards();
 
 enableValidation(settings);
 
-// let profileName = ;
-// const profileAbout = ;
-// const profileAvatar = ;
+getUserInformation()
+  .then((user) => {
+    profileTitle.textContent = user.name;
+    profileDescription.textContent = user.about;
+    profileImage.style.backgroundImage = `url('${user.avatar}')`;
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
-getUserInformation();
-
-export { increaseCardImage, profileTitle, profileDescription, profileImage };
+export { increaseCardImage };
