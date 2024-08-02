@@ -40,4 +40,18 @@ function setProfileInfo(name, about) {
   }).then(handleResponse);
 }
 
-export { getUserInformation, getAllCards, setProfileInfo };
+function postNewCard(name, link) {
+  return fetch(PATH + "cards", {
+    method: "POST",
+    headers: {
+      authorization: TOKEN,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: name,
+      link: link,
+    }),
+  }).then(handleResponse);
+}
+
+export { getUserInformation, getAllCards, setProfileInfo, postNewCard };

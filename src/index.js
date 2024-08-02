@@ -1,5 +1,4 @@
 import "./pages/index.css";
-import { initialCards } from "./scripts/cards.js";
 import { addCard, deleteCard, toggleCardLike } from "./components/card.js";
 import { openModal, closeModal } from "./components/modal.js";
 import {
@@ -12,6 +11,7 @@ import {
   getUserInformation,
   getAllCards,
   setProfileInfo,
+  postNewCard,
 } from "./components/api.js";
 
 // list of cards
@@ -97,9 +97,17 @@ function handleFormSubmitProfile(evt) {
 
 function handleFormSubmitCard(evt) {
   evt.preventDefault();
-  const cardName = cardFormName.value;
-  const cardLink = cardFormLink.value;
-  renderNewCard(cardLink, cardName);
+  const name = cardFormName.value;
+  const link = cardFormLink.value;
+  postNewCard(name, link)
+    .then((card) => {
+      name = card.name;
+      link = card.link;
+    })
+    .catch((err) => {
+      console.error(`Ошибка добавления карточки: ${err}`);
+    });
+  renderNewCard(name, link);
   closeModal(evt.target.closest(".popup"));
   resetFields(popupNewCardForm);
 }
