@@ -124,12 +124,12 @@
     <template id="card-template">
       <li class="places__item card">
         <img class="card__image" src="" alt="" />
-        <button type="button" class="card__delete-button"></button>
+        <button type="button" class="card__delete-button" aria-label="Удалить карточку"></button>
         <div class="card__description">
           <h2 class="card__title"></h2>
           <div class="card__like-container">
-            <button type="button" class="card__like-button"></button>
-            <span class="card__like-count">0</span>
+            <button type="button" class="card__like-button" aria-label="Поставить лайк"></button>
+            <span class="card__like-count" aria-live="polite">0</span>
           </div>
         </div>
       </li>
