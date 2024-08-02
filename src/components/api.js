@@ -1,5 +1,10 @@
-const PATH = "https://nomoreparties.co/v1/wff-cohort-19/";
-const TOKEN = "a8fbcde7-37e5-4c27-96cb-428c4a4c4a64";
+const config = {
+  baseUrl: "https://nomoreparties.co/v1/wff-cohort-19",
+  headers: {
+    authorization: "a8fbcde7-37e5-4c27-96cb-428c4a4c4a64",
+    "Content-Type": "application/json",
+  },
+};
 
 const handleResponse = (response) => {
   if (!response.ok) {
@@ -8,59 +13,45 @@ const handleResponse = (response) => {
   return response.json();
 };
 
-function getUserInformation() {
-  return fetch(PATH + "users/me", {
+export const getUserInformation = () => {
+  return fetch(`${config.baseUrl}/users/me`, {
     method: "GET",
-    headers: {
-      authorization: TOKEN,
-    },
+    headers: config.headers,
   }).then(handleResponse);
-}
+};
 
-function getAllCards() {
-  return fetch(PATH + "cards", {
+export const getAllCards = () => {
+  return fetch(`${config.baseUrl}/cards`, {
     method: "GET",
-    headers: {
-      authorization: TOKEN,
-    },
+    headers: config.headers,
   }).then(handleResponse);
-}
+};
 
-function setProfileInfo(name, about) {
-  return fetch(PATH + "users/me", {
+export const setProfileInfo = (name, about) => {
+  return fetch(`${config.baseUrl}/users/me`, {
     method: "PATCH",
-    headers: {
-      authorization: TOKEN,
-      "Content-Type": "application/json",
-    },
+    headers: config.headers,
     body: JSON.stringify({
       name: name,
       about: about,
     }),
   }).then(handleResponse);
-}
+};
 
-function postNewCard(name, link) {
-  return fetch(PATH + "cards", {
+export const postNewCard = (name, link) => {
+  return fetch(`${config.baseUrl}/cards`, {
     method: "POST",
-    headers: {
-      authorization: TOKEN,
-      "Content-Type": "application/json",
-    },
+    headers: config.headers,
     body: JSON.stringify({
       name: name,
       link: link,
     }),
   }).then(handleResponse);
-}
+};
 
-function deleteCardFromServer(cardId) {
-  return fetch(`${PATH}/cards/${cardId}`, {
+export const deleteCardFromServer = (cardId) => {
+  return fetch(`${config.baseUrl}/cards/${cardId}`, {
     method: "DELETE",
-    headers: {
-      authorization: TOKEN,
-    },
+    headers: config.headers,
   }).then(handleResponse);
-}
-
-export { getUserInformation, getAllCards, setProfileInfo, postNewCard, deleteCardFromServer };
+};
