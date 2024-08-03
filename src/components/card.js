@@ -4,32 +4,25 @@ export const MYID = "e5f96a8c118edfdc88d8f400";
 
 const cardTemplate = document.querySelector("#card-template").content;
 
-function addCard(
-  name,
-  link,
-  likeCount = 0,
-  ownerId = null,
-  cardId = null,
-  deleteCard,
-  toggleCardLike,
-  increaseCardImage
-) {
+function addCard(cardData, deleteCard, toggleCardLike, increaseCardImage) {
   const cardElement = cardTemplate.querySelector(".card").cloneNode("true");
-  cardElement.querySelector(".card__image").src = link;
-  cardElement.querySelector(".card__image").alt = name;
-  cardElement.querySelector(".card__title").textContent = name;
+  cardElement.querySelector(".card__image").src = cardData.link;
+  cardElement.querySelector(".card__image").alt = cardData.name;
+  cardElement.querySelector(".card__title").textContent = cardData.name;
   const deleteButton = cardElement.querySelector(".card__delete-button");
-  compareCardholder(ownerId, deleteButton);
+  compareCardholder(cardData.ownerId, deleteButton);
   const likeItem = cardElement.querySelector(".card__like-button");
   const likeCounter = cardElement.querySelector(".card__like-count");
-  likeCounter.textContent = likeCount;
   likeItem.addEventListener("click", (evt) => {
-    const isLiked = toggleCardLike(evt, cardId);
-    updateLikeCount(likeCounter, isLiked, cardId);
+    const isLiked = toggleCardLike(evt, cardData.cardId);
+    updateLikeCount(likeCounter, isLiked, cardData.cardId);
   });
+  likeCounter.textContent = cardData.likeCount;
   const cardImage = cardElement.querySelector(".card__image");
   cardImage.addEventListener("click", increaseCardImage);
-  deleteButton.addEventListener("click", (evt) => deleteCard(evt, cardId));
+  deleteButton.addEventListener("click", (evt) =>
+    deleteCard(evt, cardData.cardId)
+  );
   return cardElement;
 }
 

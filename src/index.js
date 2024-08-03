@@ -51,18 +51,9 @@ profileAddButton.addEventListener("click", () => {
   clearValidationErrors(popupNewCard);
 });
 
-function renderNewCard(name, link) {
+function renderNewCard(cardData) {
   placesList.prepend(
-    addCard(
-      name,
-      link,
-      undefined,
-      undefined,
-      undefined,
-      deleteCard,
-      toggleCardLike,
-      increaseCardImage
-    )
+    addCard(cardData, deleteCard, toggleCardLike, increaseCardImage)
   );
 }
 
@@ -107,19 +98,24 @@ function handleFormSubmitProfile(evt) {
 
 function handleFormSubmitCard(evt) {
   evt.preventDefault();
-  let name = cardFormName.value;
-  let link = cardFormLink.value;
+  const name = cardFormName.value;
+  const link = cardFormLink.value;
   postNewCard(name, link)
     .then((card) => {
-      name = card.name;
-      link = card.link;
+      const cardData = {
+        name: card.name,
+        link: card.link,
+        likeCount: card.likes.length,
+        ownerId: card.owner._id,
+        cardId: card._id,
+      };
+      renderNewCard(cardData);
+      closeModal(evt.target.closest(".popup"));
+      resetFields(popupNewCardForm);
     })
     .catch((err) => {
       console.error(`Ошибка добавления карточки: ${err}`);
     });
-  renderNewCard(name, link);
-  closeModal(evt.target.closest(".popup"));
-  resetFields(popupNewCardForm);
 }
 
 // fields validation and resets
@@ -169,21 +165,15 @@ if (profileTitle && profileDescription && profileImage) {
 
 getAllCards().then((allCards) => {
   allCards.forEach((card) => {
-    const { name, link, likes, owner, id } = card;
-    const likeCount = likes.length;
-    const ownerId = owner._id;
-    const cardId = card._id;
+    const cardData = {
+      name: card.name,
+      link: card.link,
+      likeCount: card.likes.length,
+      ownerId: card.owner._id,
+      cardId: card._id,
+    };
     placesList.append(
-      addCard(
-        name,
-        link,
-        likeCount,
-        ownerId,
-        cardId,
-        deleteCard,
-        toggleCardLike,
-        increaseCardImage
-      )
+      addCard(cardData, deleteCard, toggleCardLike, increaseCardImage)
     );
   });
 });
