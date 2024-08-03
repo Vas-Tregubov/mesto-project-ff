@@ -38,6 +38,16 @@ export const setProfileInfo = (name, about) => {
   }).then(handleResponse);
 };
 
+export const setProfileAvatar = (avatar) => {
+  return fetch(`${config.baseUrl}/users/me/avatar`, {
+    method: "PATCH",
+    headers: config.headers,
+    body: JSON.stringify({
+      avatar: avatar,
+    }),
+  }).then(handleResponse);
+};
+
 export const postNewCard = (name, link) => {
   return fetch(`${config.baseUrl}/cards`, {
     method: "POST",

@@ -17,6 +17,7 @@ import {
   getAllCards,
   setProfileInfo,
   postNewCard,
+  setProfileAvatar,
 } from "./components/api.js";
 
 // list of cards
@@ -100,6 +101,22 @@ function handleFormSubmitProfile(evt) {
   closeModal(evt.target.closest(".popup"));
 }
 
+function handleFormChangeProfileAvatar(evt) {
+  // evt.preventDefault();
+  // const link = profileFormName.value; ЗДЕСЬ НУЖНО УКАЗАТЬ ПОЛЕ ИЗ НОВОЙ ФОРМЫ
+  const avatar = 'https://img.razrisyika.ru/kart/126/1200/502836-sobaka-taksa-32.jpg';
+  setProfileAvatar(avatar)
+    .then((user) => {
+      profileImage.style.backgroundImage = `url('${user.avatar}')`;
+    })
+    .catch((err) => {
+      console.error(`Ошибка обновления аватара: ${err}`);
+    });
+  // closeModal(evt.target.closest(".popup"));
+}
+
+handleFormChangeProfileAvatar();
+
 function handleFormSubmitCard(evt) {
   evt.preventDefault();
   const name = cardFormName.value;
@@ -169,7 +186,6 @@ if (profileTitle && profileDescription && profileImage) {
 
 getAllCards().then((allCards) => {
   allCards.forEach((card) => {
-    console.log(card);
     const cardData = {
       name: card.name,
       link: card.link,
