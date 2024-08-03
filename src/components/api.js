@@ -73,3 +73,24 @@ export const likeCardWithSaveOnServer = (cardId, isLiked) => {
     headers: config.headers,
   }).then(handleResponse);
 };
+
+// export const validateImageUrl = function (url) {
+//   return new Promise((resolve, reject) => {
+//     fetch(url, { method: "HEAD" })
+//       .then((response) => {
+//         if (!response.ok) {
+//           return reject("Неправильно указан URL или сервер вернул ошибку.");
+//         }
+
+//         const contentType = response.headers.get("Content-Type");
+//         if (contentType && contentType.startsWith("image/")) {
+//           resolve();
+//         } else {
+//           reject("URL не является изображением.");
+//         }
+//       })
+//       .catch((error) => {
+//         reject(error.message || "Произошла ошибка при проверке URL.");
+//       });
+//   });
+// };

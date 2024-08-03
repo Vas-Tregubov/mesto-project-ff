@@ -18,6 +18,7 @@ import {
   setProfileInfo,
   postNewCard,
   setProfileAvatar,
+  validateImageUrl,
 } from "./components/api.js";
 
 // list of cards
@@ -34,15 +35,23 @@ const profileImage = document.querySelector(".profile__image");
 
 const profileEditButton = document.querySelector(".profile__edit-button");
 const popupEditProfile = document.querySelector(".popup_type_edit");
+const popupEditProfileAvatar = document.querySelector(".popup_type_new-avatar");
+const profileAvatarLink = document.querySelector(
+  ".popup__input_type_avatar_url"
+);
 const profileFormName = document.querySelector(".popup__input_type_name");
 const profileFormDescription = document.querySelector(
   ".popup__input_type_description"
 );
-const profileAddButton = document.querySelector(".profile__add-button");
 profileEditButton.addEventListener("click", () => {
   openModal(popupEditProfile);
   resetFields(popupEditProfile);
   clearValidationErrors(popupEditProfile);
+});
+profileImage.addEventListener("click", () => {
+  openModal(popupEditProfileAvatar);
+  resetFields(popupEditProfileAvatar);
+  clearValidationErrors(popupEditProfileAvatar);
 });
 
 // card addition
@@ -50,6 +59,7 @@ profileEditButton.addEventListener("click", () => {
 const popupNewCard = document.querySelector(".popup_type_new-card");
 const cardFormName = document.querySelector(".popup__input_type_card-name");
 const cardFormLink = document.querySelector(".popup__input_type_url");
+const profileAddButton = document.querySelector(".profile__add-button");
 profileAddButton.addEventListener("click", () => {
   openModal(popupNewCard);
   resetFields(popupNewCard);
@@ -84,6 +94,11 @@ const popupEditProfileForm = document.forms["edit-profile"];
 popupEditProfileForm.addEventListener("submit", handleFormSubmitProfile);
 const popupNewCardForm = document.forms["new-place"];
 popupNewCardForm.addEventListener("submit", handleFormSubmitCard);
+const popupEditProfileAvatarForm = document.forms["new-avatar"];
+popupEditProfileAvatarForm.addEventListener(
+  "submit",
+  handleFormChangeProfileAvatar
+);
 
 function handleFormSubmitProfile(evt) {
   evt.preventDefault();
@@ -102,9 +117,8 @@ function handleFormSubmitProfile(evt) {
 }
 
 function handleFormChangeProfileAvatar(evt) {
-  // evt.preventDefault();
-  // const link = profileFormName.value; ЗДЕСЬ НУЖНО УКАЗАТЬ ПОЛЕ ИЗ НОВОЙ ФОРМЫ
-  const avatar = 'https://img.razrisyika.ru/kart/126/1200/502836-sobaka-taksa-32.jpg';
+  evt.preventDefault();
+  const avatar = profileAvatarLink.value;
   setProfileAvatar(avatar)
     .then((user) => {
       profileImage.style.backgroundImage = `url('${user.avatar}')`;
@@ -112,10 +126,9 @@ function handleFormChangeProfileAvatar(evt) {
     .catch((err) => {
       console.error(`Ошибка обновления аватара: ${err}`);
     });
-  // closeModal(evt.target.closest(".popup"));
-}
 
-handleFormChangeProfileAvatar();
+  closeModal(evt.target.closest(".popup"));
+}
 
 function handleFormSubmitCard(evt) {
   evt.preventDefault();
@@ -199,5 +212,9 @@ getAllCards().then((allCards) => {
     );
   });
 });
+
+// function showErrorToUser(message) {
+//   alert(`Ошибка: ${message}`);
+// }
 
 export { increaseCardImage };
