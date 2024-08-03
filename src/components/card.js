@@ -12,6 +12,9 @@ function addCard(cardData, deleteCard, toggleCardLike, increaseCardImage) {
   const deleteButton = cardElement.querySelector(".card__delete-button");
   compareCardholder(cardData.ownerId, deleteButton);
   const likeItem = cardElement.querySelector(".card__like-button");
+  if (cardData.isLiked) {
+    likeItem.classList.add("card__like-button_is-active");
+  }
   const likeCounter = cardElement.querySelector(".card__like-count");
   likeItem.addEventListener("click", (evt) => {
     const isLiked = toggleCardLike(evt, cardData.cardId);

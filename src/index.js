@@ -1,5 +1,10 @@
 import "./pages/index.css";
-import { addCard, deleteCard, toggleCardLike } from "./components/card.js";
+import {
+  addCard,
+  deleteCard,
+  toggleCardLike,
+  MYID,
+} from "./components/card.js";
 import { openModal, closeModal } from "./components/modal.js";
 import {
   enableValidation,
@@ -12,7 +17,6 @@ import {
   getAllCards,
   setProfileInfo,
   postNewCard,
-  MYID,
 } from "./components/api.js";
 
 // list of cards
@@ -165,12 +169,14 @@ if (profileTitle && profileDescription && profileImage) {
 
 getAllCards().then((allCards) => {
   allCards.forEach((card) => {
+    console.log(card);
     const cardData = {
       name: card.name,
       link: card.link,
       likeCount: card.likes.length,
       ownerId: card.owner._id,
       cardId: card._id,
+      isLiked: card.likes.some((like) => like._id === MYID),
     };
     placesList.append(
       addCard(cardData, deleteCard, toggleCardLike, increaseCardImage)
