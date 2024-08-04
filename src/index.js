@@ -91,65 +91,82 @@ function increaseCardImage(evt) {
 // form submits
 
 const popupEditProfileForm = document.forms["edit-profile"];
-popupEditProfileForm.addEventListener("submit", handleFormSubmitProfile);
-const popupNewCardForm = document.forms["new-place"];
-popupNewCardForm.addEventListener("submit", handleFormSubmitCard);
-const popupEditProfileAvatarForm = document.forms["new-avatar"];
-popupEditProfileAvatarForm.addEventListener(
-  "submit",
-  handleFormChangeProfileAvatar
-);
-
-function handleFormSubmitProfile(evt) {
+popupEditProfileForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
-  const name = profileFormName.value;
-  const about = profileFormDescription.value;
-  setProfileInfo(name, about)
-    .then((user) => {
-      profileTitle.textContent = user.name;
-      profileDescription.textContent = user.about;
-      profileImage.style.backgroundImage = `url('${user.avatar}')`;
+  handleFormSubmit(
+    popupEditProfileForm,
+    popupEditProfileForm.querySelector(".popup__button"),
+    handleFormSubmitProfile
+  );
+});
+const popupNewCardForm = document.forms["new-place"];
+popupNewCardForm.addEventListener("submit", (evt) => {
+  evt.preventDefault();
+  handleFormSubmit(
+    popupNewCardForm,
+    popupNewCardForm.querySelector(".popup__button"),
+    handleFormSubmitCard
+  );
+});
+const popupEditProfileAvatarForm = document.forms["new-avatar"];
+popupEditProfileAvatarForm.addEventListener("submit", (evt) => {
+  evt.preventDefault();
+  handleFormSubmit(
+    popupEditProfileAvatarForm,
+    popupEditProfileAvatarForm.querySelector(".popup__button"),
+    handleFormChangeProfileAvatar
+  );
+});
+
+function handleFormSubmit(form, submitButton, submitAction) {
+  const originalButtonText = submitButton.textContent;
+  submitButton.textContent = "Сохранение...";
+  submitButton.disabled = true;
+
+  submitAction()
+    .then(() => {
+      closeModal(form.closest(".popup"));
     })
     .catch((err) => {
-      console.error(`Ошибка обновления профиля: ${err}`);
+      console.error(`Ошибка: ${err}`);
+    })
+    .finally(() => {
+      submitButton.textContent = originalButtonText;
+      submitButton.disabled = false;
     });
-  closeModal(evt.target.closest(".popup"));
 }
 
-function handleFormChangeProfileAvatar(evt) {
-  evt.preventDefault();
-  const avatar = profileAvatarLink.value;
-  setProfileAvatar(avatar)
-    .then((user) => {
-      profileImage.style.backgroundImage = `url('${user.avatar}')`;
-    })
-    .catch((err) => {
-      console.error(`Ошибка обновления аватара: ${err}`);
-    });
+function handleFormSubmitProfile() {
+  const name = profileFormName.value;
+  const about = profileFormDescription.value;
+  return setProfileInfo(name, about).then((user) => {
+    profileTitle.textContent = user.name;
+    profileDescription.textContent = user.about;
+    profileImage.style.backgroundImage = `url('${user.avatar}')`;
+  });
+}
 
-  closeModal(evt.target.closest(".popup"));
+function handleFormChangeProfileAvatar() {
+  const avatar = profileAvatarLink.value;
+  return setProfileAvatar(avatar).then((user) => {
+    profileImage.style.backgroundImage = `url('${user.avatar}')`;
+  });
 }
 
 function handleFormSubmitCard(evt) {
-  evt.preventDefault();
   const name = cardFormName.value;
   const link = cardFormLink.value;
-  postNewCard(name, link)
-    .then((card) => {
-      const cardData = {
-        name: card.name,
-        link: card.link,
-        likeCount: card.likes.length,
-        ownerId: card.owner._id,
-        cardId: card._id,
-      };
-      renderNewCard(cardData);
-      closeModal(evt.target.closest(".popup"));
-      resetFields(popupNewCardForm);
-    })
-    .catch((err) => {
-      console.error(`Ошибка добавления карточки: ${err}`);
-    });
+  return postNewCard(name, link).then((card) => {
+    const cardData = {
+      name: card.name,
+      link: card.link,
+      likeCount: card.likes.length,
+      ownerId: card.owner._id,
+      cardId: card._id,
+    };
+    renderNewCard(cardData);
+    resetFields(popupNewCardForm);
+  });
 }
 
 // fields validation and resets
