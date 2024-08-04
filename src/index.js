@@ -202,33 +202,30 @@ const catchError = (err) => {
   console.error(err);
 };
 
-if (profileTitle && profileDescription && profileImage) {
-  getUserInformation()
-    .then((user) => {
+Promise.all([getUserInformation(), getAllCards()])
+  .then(([user, allCards]) => {
+    if (profileTitle && profileDescription && profileImage) {
       profileTitle.textContent = user.name;
       profileDescription.textContent = user.about;
       profileImage.style.backgroundImage = `url('${user.avatar}')`;
-    })
-    .catch(catchError);
-} else {
-  console.error("Ошибка: Не удалось найти элементы DOM");
-}
-
-getAllCards().then((allCards) => {
-  allCards.forEach((card) => {
-    const cardData = {
-      name: card.name,
-      link: card.link,
-      likeCount: card.likes.length,
-      ownerId: card.owner._id,
-      cardId: card._id,
-      isLiked: card.likes.some((like) => like._id === MYID),
-    };
-    placesList.append(
-      addCard(cardData, deleteCard, toggleCardLike, increaseCardImage)
-    );
-  });
-});
+    } else {
+      console.error("Ошибка: Не удалось найти элементы DOM");
+    }
+    allCards.forEach((card) => {
+      const cardData = {
+        name: card.name,
+        link: card.link,
+        likeCount: card.likes.length,
+        ownerId: card.owner._id,
+        cardId: card._id,
+        isLiked: card.likes.some((like) => like._id === MYID),
+      };
+      placesList.append(
+        addCard(cardData, deleteCard, toggleCardLike, increaseCardImage)
+      );
+    });
+  })
+  .catch(catchError);
 
 // function showErrorToUser(message) {
 //   alert(`Ошибка: ${message}`);
