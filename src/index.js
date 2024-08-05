@@ -1,10 +1,5 @@
 import "./pages/index.css";
-import {
-  addCard,
-  deleteCard,
-  toggleCardLike,
-  MYID,
-} from "./components/card.js";
+import { addCard, deleteCard, toggleCardLike } from "./components/card.js";
 import { openModal, closeModal } from "./components/modal.js";
 import {
   enableValidation,
@@ -20,6 +15,10 @@ import {
   setProfileAvatar,
   validateImageUrl,
 } from "./components/api.js";
+
+// user ID (it )
+
+export let userId;
 
 // list of cards
 
@@ -44,14 +43,21 @@ const profileFormDescription = document.querySelector(
   ".popup__input_type_description"
 );
 profileEditButton.addEventListener("click", () => {
-  openModal(popupEditProfile);
-  resetFields(popupEditProfile);
-  clearValidationErrors(popupEditProfile);
+  getUserInformation()
+    .then((user) => {
+      profileFormName.value = user.name;
+      profileFormDescription.value = user.about;
+      openModal(popupEditProfile);
+      clearValidationErrors(popupEditProfile, settings);
+    })
+    .catch((err) => {
+      console.error(`Ошибка при получении информации о пользователе: ${err}`);
+    });
 });
 profileImage.addEventListener("click", () => {
   openModal(popupEditProfileAvatar);
   resetFields(popupEditProfileAvatar);
-  clearValidationErrors(popupEditProfileAvatar);
+  clearValidationErrors(popupEditProfileAvatar, settings);
 });
 
 // card addition
@@ -63,7 +69,7 @@ const profileAddButton = document.querySelector(".profile__add-button");
 profileAddButton.addEventListener("click", () => {
   openModal(popupNewCard);
   resetFields(popupNewCard);
-  clearValidationErrors(popupNewCard);
+  clearValidationErrors(popupNewCard, settings);
 });
 
 function renderNewCard(cardData) {
@@ -139,34 +145,42 @@ function handleFormSubmit(form, submitButton, submitAction) {
 function handleFormSubmitProfile() {
   const name = profileFormName.value;
   const about = profileFormDescription.value;
-  return setProfileInfo(name, about).then((user) => {
-    profileTitle.textContent = user.name;
-    profileDescription.textContent = user.about;
-    profileImage.style.backgroundImage = `url('${user.avatar}')`;
-  });
+  return setProfileInfo(name, about)
+    .then((user) => {
+      profileTitle.textContent = user.name;
+      profileDescription.textContent = user.about;
+      profileImage.style.backgroundImage = `url('${user.avatar}')`;
+      userId = user._id;
+      console.log(userId);
+    })
+    .catch(catchError);
 }
 
 function handleFormChangeProfileAvatar() {
   const avatar = profileAvatarLink.value;
-  return setProfileAvatar(avatar).then((user) => {
-    profileImage.style.backgroundImage = `url('${user.avatar}')`;
-  });
+  return setProfileAvatar(avatar)
+    .then((user) => {
+      profileImage.style.backgroundImage = `url('${user.avatar}')`;
+    })
+    .catch(catchError);
 }
 
 function handleFormSubmitCard(evt) {
   const name = cardFormName.value;
   const link = cardFormLink.value;
-  return postNewCard(name, link).then((card) => {
-    const cardData = {
-      name: card.name,
-      link: card.link,
-      likeCount: card.likes.length,
-      ownerId: card.owner._id,
-      cardId: card._id,
-    };
-    renderNewCard(cardData);
-    resetFields(popupNewCardForm);
-  });
+  return postNewCard(name, link)
+    .then((card) => {
+      const cardData = {
+        name: card.name,
+        link: card.link,
+        likeCount: card.likes.length,
+        ownerId: userId,
+        cardId: card._id,
+      };
+      renderNewCard(cardData);
+      resetFields(popupNewCardForm);
+    })
+    .catch(catchError);
 }
 
 // fields validation and resets
@@ -208,6 +222,7 @@ Promise.all([getUserInformation(), getAllCards()])
       profileTitle.textContent = user.name;
       profileDescription.textContent = user.about;
       profileImage.style.backgroundImage = `url('${user.avatar}')`;
+      userId = user._id;
     } else {
       console.error("Ошибка: Не удалось найти элементы DOM");
     }
@@ -218,7 +233,7 @@ Promise.all([getUserInformation(), getAllCards()])
         likeCount: card.likes.length,
         ownerId: card.owner._id,
         cardId: card._id,
-        isLiked: card.likes.some((like) => like._id === MYID),
+        isLiked: card.likes.some((like) => like._id === userId),
       };
       placesList.append(
         addCard(cardData, deleteCard, toggleCardLike, increaseCardImage)
@@ -230,5 +245,3 @@ Promise.all([getUserInformation(), getAllCards()])
 // function showErrorToUser(message) {
 //   alert(`Ошибка: ${message}`);
 // }
-
-export { increaseCardImage };

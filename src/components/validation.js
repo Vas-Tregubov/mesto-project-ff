@@ -1,5 +1,3 @@
-import { settings } from "./validation-settings.js";
-
 function setEventListeners(formElement, settings) {
   const inputList = Array.from(
     formElement.querySelectorAll(settings.inputSelector)
@@ -71,7 +69,7 @@ function enableValidation(settings) {
   });
 }
 
-function clearValidationErrors(formElement) {
+function clearValidationErrors(formElement, settings) {
   const inputList = Array.from(formElement.querySelectorAll(".popup__input"));
   inputList.forEach((inputElement) => {
     hideInputError(formElement, inputElement, settings);

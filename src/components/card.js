@@ -1,6 +1,5 @@
 import { deleteCardFromServer, likeCardWithSaveOnServer } from "./api";
-
-export const MYID = "e5f96a8c118edfdc88d8f400";
+import { userId } from "../index.js";
 
 const cardTemplate = document.querySelector("#card-template").content;
 
@@ -12,15 +11,14 @@ function addCard(cardData, deleteCard, toggleCardLike, increaseCardImage) {
   const deleteButton = cardElement.querySelector(".card__delete-button");
   compareCardholder(cardData.ownerId, deleteButton);
   const likeItem = cardElement.querySelector(".card__like-button");
+  const likeCounter = cardElement.querySelector(".card__like-count");
   if (cardData.isLiked) {
     likeItem.classList.add("card__like-button_is-active");
   }
-  const likeCounter = cardElement.querySelector(".card__like-count");
-  likeItem.addEventListener("click", (evt) => {
-    const isLiked = toggleCardLike(evt, cardData.cardId);
-    updateLikeCount(likeCounter, isLiked, cardData.cardId);
-  });
   likeCounter.textContent = cardData.likeCount;
+  likeItem.addEventListener("click", (evt) => {
+    toggleCardLike(evt, cardData.cardId, likeCounter);
+  });
   const cardImage = cardElement.querySelector(".card__image");
   cardImage.addEventListener("click", increaseCardImage);
   deleteButton.addEventListener("click", (evt) =>
@@ -31,31 +29,31 @@ function addCard(cardData, deleteCard, toggleCardLike, increaseCardImage) {
 
 function deleteCard(evt, cardId) {
   const card = evt.target.closest(".card");
-  card.remove();
-  deleteCardFromServer(cardId);
+  deleteCardFromServer(cardId)
+    .then(() => {
+      card.remove();
+    })
+    .catch((err) => {
+      console.error(`Ошибка при удалении карточки: ${err}`);
+    });
 }
 
 function toggleCardLike(evt, cardId) {
   const like = evt.target.closest(".card__like-button");
-  like.classList.toggle("card__like-button_is-active");
   const isLiked = like.classList.contains("card__like-button_is-active");
-  likeCardWithSaveOnServer(cardId, isLiked);
-  return isLiked;
-}
-
-function updateLikeCount(likeCounter, isLiked, cardId) {
-  let likeCount = parseInt(likeCounter.textContent, 10);
-  likeCount = isLiked ? likeCount + 1 : likeCount - 1;
-  likeCounter.textContent = likeCount;
-
-  likeCardWithSaveOnServer(cardId, isLiked).catch((error) => {
-    console.error(`Ошибка обновления лайков на сервере: ${error}`);
-    likeCounter.textContent = isLiked ? likeCount - 1 : likeCount + 1;
-  });
+  likeCardWithSaveOnServer(cardId, isLiked)
+    .then(() => {
+      like.classList.toggle("card__like-button_is-active");
+      likeCounter.textContent = updatedCard.likes.length;
+    })
+    .catch((err) => {
+      console.error(`Ошибка при постановке лайка: ${err}`);
+    });
+  return !isLiked;
 }
 
 function compareCardholder(ownerId, button) {
-  if (ownerId && ownerId != MYID) {
+  if (ownerId && ownerId != userId) {
     button.style.display = "none";
   }
 }
