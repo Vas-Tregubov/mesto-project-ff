@@ -1,9 +1,14 @@
 import { deleteCardFromServer, likeCardWithSaveOnServer } from "./api";
-import { userId } from "../index.js";
 
 const cardTemplate = document.querySelector("#card-template").content;
 
-function addCard(cardData, deleteCard, toggleCardLike, increaseCardImage) {
+function addCard(
+  cardData,
+  deleteCard,
+  toggleCardLike,
+  increaseCardImage,
+  compareCardholder
+) {
   const cardElement = cardTemplate.querySelector(".card").cloneNode("true");
   cardElement.querySelector(".card__image").src = cardData.link;
   cardElement.querySelector(".card__image").alt = cardData.name;
@@ -38,11 +43,11 @@ function deleteCard(evt, cardId) {
     });
 }
 
-function toggleCardLike(evt, cardId) {
+function toggleCardLike(evt, cardId, likeCounter) {
   const like = evt.target.closest(".card__like-button");
   const isLiked = like.classList.contains("card__like-button_is-active");
   likeCardWithSaveOnServer(cardId, isLiked)
-    .then(() => {
+    .then((updatedCard) => {
       like.classList.toggle("card__like-button_is-active");
       likeCounter.textContent = updatedCard.likes.length;
     })
@@ -50,12 +55,6 @@ function toggleCardLike(evt, cardId) {
       console.error(`Ошибка при постановке лайка: ${err}`);
     });
   return !isLiked;
-}
-
-function compareCardholder(ownerId, button) {
-  if (ownerId && ownerId != userId) {
-    button.style.display = "none";
-  }
 }
 
 export { addCard, deleteCard, toggleCardLike };

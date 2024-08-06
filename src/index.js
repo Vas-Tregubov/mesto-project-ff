@@ -16,9 +16,9 @@ import {
   validateImageUrl,
 } from "./components/api.js";
 
-// user ID (it )
+// user ID
 
-export let userId;
+let userId;
 
 // list of cards
 
@@ -43,16 +43,10 @@ const profileFormDescription = document.querySelector(
   ".popup__input_type_description"
 );
 profileEditButton.addEventListener("click", () => {
-  getUserInformation()
-    .then((user) => {
-      profileFormName.value = user.name;
-      profileFormDescription.value = user.about;
-      openModal(popupEditProfile);
-      clearValidationErrors(popupEditProfile, settings);
-    })
-    .catch((err) => {
-      console.error(`Ошибка при получении информации о пользователе: ${err}`);
-    });
+  profileFormName.value = profileTitle.textContent;
+  profileFormDescription.value = profileDescription.textContent;
+  openModal(popupEditProfile);
+  clearValidationErrors(popupEditProfile, settings);
 });
 profileImage.addEventListener("click", () => {
   openModal(popupEditProfileAvatar);
@@ -74,7 +68,13 @@ profileAddButton.addEventListener("click", () => {
 
 function renderNewCard(cardData) {
   placesList.prepend(
-    addCard(cardData, deleteCard, toggleCardLike, increaseCardImage)
+    addCard(
+      cardData,
+      deleteCard,
+      toggleCardLike,
+      increaseCardImage,
+      compareCardholder
+    )
   );
 }
 
@@ -151,7 +151,6 @@ function handleFormSubmitProfile() {
       profileDescription.textContent = user.about;
       profileImage.style.backgroundImage = `url('${user.avatar}')`;
       userId = user._id;
-      console.log(userId);
     })
     .catch(catchError);
 }
@@ -208,6 +207,12 @@ function resetFields(obj) {
   toggleButtonState(inputList, buttonElement, settings);
 }
 
+function compareCardholder(ownerId, button) {
+  if (ownerId && ownerId != userId) {
+    button.style.display = "none";
+  }
+}
+
 enableValidation(settings);
 
 // API functions
@@ -236,7 +241,13 @@ Promise.all([getUserInformation(), getAllCards()])
         isLiked: card.likes.some((like) => like._id === userId),
       };
       placesList.append(
-        addCard(cardData, deleteCard, toggleCardLike, increaseCardImage)
+        addCard(
+          cardData,
+          deleteCard,
+          toggleCardLike,
+          increaseCardImage,
+          compareCardholder
+        )
       );
     });
   })
